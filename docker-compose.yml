@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  train:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/opt/data/
+      - ./outputs:/opt/outputs/
+      - ./logs:/opt/logs/
+      - ./remotefs:/opt/remotefs/
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    ports:
+      - "43800:43800" 
+    shm_size: 4G
+    ipc: host
